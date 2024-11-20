@@ -64,6 +64,27 @@ class SoftwareQuery:
         return new_dict
 
 class GRPCForwarder:
+    """
+    Handles forwarding queries to GRPC servers for hardware execution.
+
+    This class manages the distribution of queries across multiple GRPC servers
+    and processes their results.
+
+    Args:
+        server_addresses (list): List of server addresses
+        port (int): Port number for the servers
+        ports (list): List of port numbers for multiple servers
+        enabled_objectives (list): List of enabled objective functions
+        definition (ProblemDefinition): Problem definition object
+
+    Attributes:
+        definition (ProblemDefinition): The problem definition
+        parameters (list): Search space parameters
+        fidelity_params (list): Fidelity parameters
+        enabled_objectives (list): Enabled objectives
+        grpc_urls (list): List of GRPC server URLs
+        queue_handler (QueueHandler): Handler for server queues
+    """
     def __init__(self, server_addresses, port, ports, enabled_objectives, definition: ProblemDefinition):
         self.definition = definition
         self.parameters = definition.search_space.params
@@ -73,6 +94,20 @@ class GRPCForwarder:
         self.queue_handler = QueueHandler(self.grpc_urls)
 
     def calculate_grpc_urls(self, server_addresses, port, ports):
+        """
+        Calculate GRPC server URLs based on provided addresses and ports.
+
+        Args:
+            server_addresses (list): List of server addresses
+            port (int): Port number
+            ports (list): List of port numbers
+
+        Returns:
+            list: List of complete GRPC URLs
+
+        Raises:
+            ValueError: If server addresses and ports lengths don't match
+        """
         logging.info(f"Server addresses: {server_addresses}, port: {port}, ports: {ports}")
         if server_addresses is None:
             return ["localhost:50051"]
@@ -121,15 +156,36 @@ class GRPCForwarder:
         return pd.DataFrame([values], columns=self.enabled_objectives, index=multi_index)
 
 
-class Study():
-    tab = None
-    query_tab = None
-    models = None
+from pandas import DataFrame
+from typing import Any, Dict, List
 
-    def __init__(self, benchmark_name: str, definition: ProblemDefinition,
-                 enable_tabular: bool, dataset, enabled_objectives: list[str],
-                 server_addresses: list[str] = None, port=None, ports=None, url="", queue_handler=None,
-                 enable_model: bool = True, enable_download: bool = True, study_name = None):
+class Study():
+    """
+    Manages optimization studies combining software and hardware queries.
+
+    This class coordinates between tabular datasets, surrogate models, and hardware
+    execution to conduct optimization studies.
+    """
+
+    tab: Optional[DataFrame] = None
+    query_tab: Optional[DataFrame] = None
+    models: Optional[Dict[str, Any]] = None
+
+    def __init__(self,
+                 benchmark_name: str,
+                 definition: ProblemDefinition,
+                 enable_tabular: bool,
+                 dataset: Any,
+                 enabled_objectives: List[str],
+                 server_addresses: Optional[List[str]] = None,
+                 port: Optional[int] = None,
+                 ports: Optional[List[int]] = None,
+                 url: str = "",
+                 queue_handler: Optional[QueueHandler] = None,
+                 enable_model: bool = True,
+                 enable_download: bool = True,
+                 study_name: Optional[str] = None) -> None:
+        """Initialize the Study with the given parameters."""
         self.benchmark_name = benchmark_name
         self.enabled_objectives = enabled_objectives
         self.enable_tabular = enable_tabular
@@ -168,8 +224,14 @@ class Study():
     def query(self, query: dict, fidelities: Optional[dict] = None) -> dict:
         return asyncio.run(self.query_async(query, fidelities))
 
-    async def query_async(self, query: dict, fidelities: Optional[dict] = None,
-                          study_name=None) -> list[dict]:
+    async def query_async(
+            self,
+            query: Dict[str, Any],
+            fidelities: Optional[Dict[str, Any]] = None,
+            study_name: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Asynchronously query for results.
+        """
         if study_name is None:
             study_name = self.study_name
         if fidelities is None:
@@ -180,7 +242,14 @@ class Study():
             ret[k] = res[k]
         return ret
 
-    async def query_choice(self, query: dict, fidelities: dict, study_name: str) -> dict:
+    async def query_choice(
+            self,
+            query: Dict[str, Any],
+            fidelities: Dict[str, Any],
+            study_name: str) -> Dict[str, Any]:
+        """
+        Choose between software and hardware queries based on availability.
+        """
         result = None
         if self.enable_tabular:
             result = await self.software_query.query_software(
