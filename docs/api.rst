@@ -3,7 +3,7 @@ API Documentation
 
 Study
 -----
-.. autoclass:: interopt.Study
+.. autoclass:: interopt.study
    :members:
    :undoc-members:
    :show-inheritance:
