@@ -1,0 +1,448 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; InterOpt 0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=b489f392"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="User Guide" href="user_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            InterOpt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#study">Study</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-space">Search Space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#problem-definition">Problem Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Param"><code class="docutils literal notranslate"><span class="pre">Param</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Categorical"><code class="docutils literal notranslate"><span class="pre">Categorical</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Permutation"><code class="docutils literal notranslate"><span class="pre">Permutation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Boolean"><code class="docutils literal notranslate"><span class="pre">Boolean</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Numeric"><code class="docutils literal notranslate"><span class="pre">Numeric</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Real"><code class="docutils literal notranslate"><span class="pre">Real</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Integer"><code class="docutils literal notranslate"><span class="pre">Integer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.IntExponential"><code class="docutils literal notranslate"><span class="pre">IntExponential</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Ordinal"><code class="docutils literal notranslate"><span class="pre">Ordinal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.String"><code class="docutils literal notranslate"><span class="pre">String</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.Constraint"><code class="docutils literal notranslate"><span class="pre">Constraint</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.is_numeric"><code class="docutils literal notranslate"><span class="pre">is_numeric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.is_categorical"><code class="docutils literal notranslate"><span class="pre">is_categorical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.is_permutation"><code class="docutils literal notranslate"><span class="pre">is_permutation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.parameter.get_param_type"><code class="docutils literal notranslate"><span class="pre">get_param_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#datasets">Datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#queue-handler">Queue Handler</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#runner-components">Runner Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#grpc-runner-main">GRPC Runner Main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grpc-server">GRPC Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.runner.model.load_catboost_models"><code class="docutils literal notranslate"><span class="pre">load_catboost_models()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.runner.model.load_autogluon_models"><code class="docutils literal notranslate"><span class="pre">load_autogluon_models()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.runner.model.load_models"><code class="docutils literal notranslate"><span class="pre">load_models()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interopt.runner.model.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">InterOpt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="study">
+<h3>Study<a class="headerlink" href="#study" title="Link to this heading"></a></h3>
+</section>
+<section id="search-space">
+<h3>Search Space<a class="headerlink" href="#search-space" title="Link to this heading"></a></h3>
+</section>
+<section id="problem-definition">
+<h3>Problem Definition<a class="headerlink" href="#problem-definition" title="Link to this heading"></a></h3>
+</section>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="py class" id="module-interopt.parameter">
+<dt class="sig sig-object py" id="interopt.parameter.Param">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Param" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base parameter class</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Param.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#interopt.parameter.Param.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Param.default">
+<span class="sig-name descname"><span class="pre">default</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></em><a class="headerlink" href="#interopt.parameter.Param.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Param.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Param.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Categorical">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Categorical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">categories</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Categorical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Categorical" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>Categorical parameter with discrete categories</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Categorical.categories">
+<span class="sig-name descname"><span class="pre">categories</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#interopt.parameter.Categorical.categories" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Categorical.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">categories</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Categorical.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Permutation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Permutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Permutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Permutation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>Permutation parameter with fixed length</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Permutation.length">
+<span class="sig-name descname"><span class="pre">length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#interopt.parameter.Permutation.length" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Permutation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Permutation.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Boolean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Boolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Boolean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Boolean" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>Boolean parameter</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Boolean.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Boolean.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Numeric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Numeric" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>Base class for numeric parameters</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Numeric.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">,</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">],</span> <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">,</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a><span class="pre">]]</span></em><a class="headerlink" href="#interopt.parameter.Numeric.bounds" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Numeric.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#interopt.parameter.Numeric.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Numeric.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Numeric.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Real">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Real</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Real"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Real" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Numeric" title="interopt.parameter.Numeric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Numeric</span></code></a></p>
+<p>Real-valued parameter</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Real.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Real.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Integer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Integer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Integer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Integer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Numeric" title="interopt.parameter.Numeric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Numeric</span></code></a></p>
+<p>Integer-valued parameter</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Integer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Integer.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">IntExponential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#IntExponential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.IntExponential" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>Integer parameter with exponential scaling</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#interopt.parameter.IntExponential.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.default">
+<span class="sig-name descname"><span class="pre">default</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></em><a class="headerlink" href="#interopt.parameter.IntExponential.default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">,</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#interopt.parameter.IntExponential.bounds" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.base">
+<span class="sig-name descname"><span class="pre">base</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#interopt.parameter.IntExponential.base" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#interopt.parameter.IntExponential.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.IntExponential.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.IntExponential.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Ordinal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Ordinal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Ordinal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Ordinal" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Numeric" title="interopt.parameter.Numeric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Numeric</span></code></a></p>
+<p>Ordinal parameter with discrete ordered values</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Ordinal.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Ordinal.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.String">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">String</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#String"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.String" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#interopt.parameter.Param" title="interopt.parameter.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p>
+<p>String parameter</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.String.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.String.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="interopt.parameter.Constraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">Constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#Constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.Constraint" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Constraint on parameter values</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Constraint.constraint">
+<span class="sig-name descname"><span class="pre">constraint</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a><span class="pre">[[</span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a><span class="pre">],</span> <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a><span class="pre">],</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#interopt.parameter.Constraint.constraint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="interopt.parameter.Constraint.dependent_params">
+<span class="sig-name descname"><span class="pre">dependent_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#interopt.parameter.Constraint.dependent_params" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interopt.parameter.Constraint.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interopt.parameter.Constraint.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.parameter.is_numeric">
+<span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#is_numeric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.is_numeric" title="Link to this definition"></a></dt>
+<dd><p>Check if parameter is numeric type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.parameter.is_categorical">
+<span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">is_categorical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#is_categorical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.is_categorical" title="Link to this definition"></a></dt>
+<dd><p>Check if parameter is categorical type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.parameter.is_permutation">
+<span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">is_permutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#is_permutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.is_permutation" title="Link to this definition"></a></dt>
+<dd><p>Check if parameter is permutation type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.parameter.get_param_type">
+<span class="sig-prename descclassname"><span class="pre">interopt.parameter.</span></span><span class="sig-name descname"><span class="pre">get_param_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/parameter.html#get_param_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.parameter.get_param_type" title="Link to this definition"></a></dt>
+<dd><p>Get string representation of parameter type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="datasets">
+<h3>Datasets<a class="headerlink" href="#datasets" title="Link to this heading"></a></h3>
+</section>
+<section id="queue-handler">
+<h3>Queue Handler<a class="headerlink" href="#queue-handler" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="runner-components">
+<h2>Runner Components<a class="headerlink" href="#runner-components" title="Link to this heading"></a></h2>
+<section id="grpc-runner-main">
+<h3>GRPC Runner Main<a class="headerlink" href="#grpc-runner-main" title="Link to this heading"></a></h3>
+</section>
+<section id="grpc-server">
+<h3>GRPC Server<a class="headerlink" href="#grpc-server" title="Link to this heading"></a></h3>
+</section>
+<section id="models">
+<h3>Models<a class="headerlink" href="#models" title="Link to this heading"></a></h3>
+<dl class="py function" id="module-interopt.runner.model">
+<dt class="sig sig-object py" id="interopt.runner.model.load_catboost_models">
+<span class="sig-prename descclassname"><span class="pre">interopt.runner.model.</span></span><span class="sig-name descname"><span class="pre">load_catboost_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objectives</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/runner/model.html#load_catboost_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.runner.model.load_catboost_models" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.runner.model.load_autogluon_models">
+<span class="sig-prename descclassname"><span class="pre">interopt.runner.model.</span></span><span class="sig-name descname"><span class="pre">load_autogluon_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objectives</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/runner/model.html#load_autogluon_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.runner.model.load_autogluon_models" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.runner.model.load_models">
+<span class="sig-prename descclassname"><span class="pre">interopt.runner.model.</span></span><span class="sig-name descname"><span class="pre">load_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objectives</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/runner/model.html#load_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.runner.model.load_models" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interopt.runner.model.train_model">
+<span class="sig-prename descclassname"><span class="pre">interopt.runner.model.</span></span><span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_tab</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/interopt/runner/model.html#train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#interopt.runner.model.train_model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="user_guide.html" class="btn btn-neutral float-left" title="User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Jacob O. Torring.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

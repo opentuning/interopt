@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>interopt.parameter &mdash; InterOpt 0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b489f392"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            InterOpt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">InterOpt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">interopt.parameter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for interopt.parameter</h1><div class="highlight"><pre>
+<span></span><span class="c1"># interopt/parameter.py</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span>
+
+<div class="viewcode-block" id="Param">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Param">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Param</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base parameter class&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Any</span></div>
+
+
+<div class="viewcode-block" id="Categorical">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Categorical">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Categorical</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Categorical parameter with discrete categories&quot;&quot;&quot;</span>
+    <span class="n">categories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Permutation">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Permutation">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Permutation</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Permutation parameter with fixed length&quot;&quot;&quot;</span>
+    <span class="n">length</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+<div class="viewcode-block" id="Boolean">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Boolean">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Boolean</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Boolean parameter&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Numeric">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Numeric">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Numeric</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for numeric parameters&quot;&quot;&quot;</span>
+    <span class="n">bounds</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Bounds must have exactly 2 elements&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Real">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Real">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Real</span><span class="p">(</span><span class="n">Numeric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Real-valued parameter&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Integer">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Integer">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Integer</span><span class="p">(</span><span class="n">Numeric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integer-valued parameter&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="IntExponential">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.IntExponential">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">IntExponential</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integer parameter with exponential scaling&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">bounds</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">base</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Ordinal">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Ordinal">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Ordinal</span><span class="p">(</span><span class="n">Numeric</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ordinal parameter with discrete ordered values&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="String">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.String">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">String</span><span class="p">(</span><span class="n">Param</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;String parameter&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Constraint">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.Constraint">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Constraint</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Constraint on parameter values&quot;&quot;&quot;</span>
+    <span class="n">constraint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="n">dependent_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<span class="c1"># Helper functions</span>
+<div class="viewcode-block" id="is_numeric">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.is_numeric">[docs]</a>
+<span class="k">def</span> <span class="nf">is_numeric</span><span class="p">(</span><span class="n">param</span><span class="p">:</span> <span class="n">Param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if parameter is numeric type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">Numeric</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_categorical">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.is_categorical">[docs]</a>
+<span class="k">def</span> <span class="nf">is_categorical</span><span class="p">(</span><span class="n">param</span><span class="p">:</span> <span class="n">Param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if parameter is categorical type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">Categorical</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_permutation">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.is_permutation">[docs]</a>
+<span class="k">def</span> <span class="nf">is_permutation</span><span class="p">(</span><span class="n">param</span><span class="p">:</span> <span class="n">Param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if parameter is permutation type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">Permutation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_param_type">
+<a class="viewcode-back" href="../../api_reference.html#interopt.parameter.get_param_type">[docs]</a>
+<span class="k">def</span> <span class="nf">get_param_type</span><span class="p">(</span><span class="n">param</span><span class="p">:</span> <span class="n">Param</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get string representation of parameter type&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">param</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Jacob O. Torring.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
