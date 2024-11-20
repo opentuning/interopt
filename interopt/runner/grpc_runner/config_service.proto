@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+service ConfigurationService {
+  rpc RunConfigurationsClientServer (ConfigurationRequest) returns (ConfigurationResponse);
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+}
+
+message ShutdownRequest {
+    bool shutdown = 1;  // flag indicating client is finished and server should shutdown
+}
+
+message ShutdownResponse {
+    bool success = 1;  // flag indicating server acknowledged shutdown request
+}
+message ConfigurationRequest {
+  Configuration configurations = 1;
+  string output_data_file = 2;
+  string study_name = 3;
+  Fidelities fidelities = 4;
+}
+
+message Configuration {
+  map<string, Parameter> parameters = 1;
+}
+
+message Fidelities {
+  map<string, Parameter> parameters = 1;
+}
+
+message Parameter {
+  oneof param_type {
+    IntegerParam integer_param = 1;
+    RealParam real_param = 2;
+    CategoricalParam categorical_param = 3;
+    OrdinalParam ordinal_param = 4;
+    StringParam string_param = 5;
+    PermutationParam permutation_param = 6;
+  }
+}
+
+message IntegerParam {
+  int32 value = 1;
+}
+
+message RealParam {
+  float value = 1;
+}
+
+message CategoricalParam {
+  int32 value = 1; // assuming the value is an integer representation
+}
+
+message OrdinalParam {
+  int32 value = 1;
+}
+
+message StringParam {
+  string value = 1;
+}
+
+message PermutationParam {
+  repeated int32 values = 1;
+}
+
+message ConfigurationResponse {
+  repeated Metric metrics = 1;
+  Timestamp timestamps = 2;
+  Feasible feasible = 3;
+}
+
+message Metric {
+  repeated double values = 1;
+  string name = 2;
+}
+
+message Timestamp {
+  int64 timestamp = 1;
+}
+
+message Feasible {
+  bool value = 1;
+}

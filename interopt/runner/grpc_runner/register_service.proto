@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+service RegistrationService {
+  rpc RegisterApplication (RegistrationRequest) returns (RegistrationResponse);
+}
+
+message RegistrationRequest {
+  string application_name = 1;
+  string hostname = 2;
+  int32 port = 3;
+  ProblemDefinition problem_definition = 4;
+}
+
+message RegistrationResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ProblemDefinition {
+  string name = 1;
+  SearchSpace search_space = 2;
+}
+
+message SearchSpace {
+  repeated Parameter params = 1;
+  repeated Metric metrics = 2;
+  repeated Objective objectives = 3;
+  repeated Constraint constraints = 4;
+}
+
+message Parameter {
+  oneof param_type {
+    Categorical categorical = 1;
+    Permutation permutation = 2;
+    Boolean boolean = 3;
+    Integer integer = 4;
+    Real real = 5;
+    String string = 6;
+  }
+}
+
+message Categorical {
+  string name = 1;
+  repeated string categories = 2;
+  string default = 3;
+}
+
+message Permutation {
+  string name = 1;
+  int32 length = 2;
+  repeated int32 default = 3;
+}
+
+message Boolean {
+  string name = 1;
+  bool default = 2;
+}
+
+message Integer {
+  string name = 1;
+  int32 lower = 2;
+  int32 upper = 3;
+  int32 default = 4;
+}
+
+message Real {
+  string name = 1;
+  float lower = 2;
+  float upper = 3;
+  float default = 4;
+}
+
+message String {
+  string name = 1;
+  string default = 2;
+}
+
+message Metric {
+  string name = 1;
+  int32 index = 2;
+  bool singular = 3;
+}
+
+message Objective {
+  string name = 1;
+  Metric metric = 2;
+  bool minimize = 3;
+}
+
+message Constraint {
+  string constraint = 1;
+}

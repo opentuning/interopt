@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+import "config_service.proto";  // Import the original service definitions
+
+// Extending the ConfigurationService by creating a new service that includes both old and new RPCs
+service InteroptService {
+  // Include all RPCs from the original ConfigurationService
+  rpc RunConfiguration(ConfigurationRequest) returns (ConfigurationResponse);
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+
+  // New RPC function
+  rpc SetupStudy(SetupStudyRequest) returns (SetupStudyResponse);
+  rpc GetStudy(GetStudyRequest) returns (GetStudyResponse);
+  rpc UpdateStudy(UpdateStudyRequest) returns (UpdateStudyResponse);
+}
+
+// New message definitions
+message GetStudyRequest {
+  string study_name = 1;
+}
+
+message GetStudyResponse {
+  string study_name = 1;
+  string problem_name = 2;
+  string dataset = 3;
+  bool enable_tabular = 4;
+  bool enable_model = 5;
+  bool enable_download = 6;
+  repeated string enable_objectives = 7;
+  repeated ServerConnection server_connections = 8;
+}
+
+message UpdateStudyRequest {
+  string study_name = 1;
+  string problem_name = 2;
+  string dataset = 3;
+  bool enable_tabular = 4;
+  bool enable_model = 5;
+  bool enable_download = 6;
+  repeated string enable_objectives = 7;
+  repeated ServerConnection server_connections = 8;
+}
+
+message UpdateStudyResponse {
+  bool success = 1;
+}
+
+message SetupStudyRequest {
+  string study_name = 1;
+  string problem_name = 2;
+  string dataset = 3;
+  bool enable_tabular = 4;
+  bool enable_model = 5;
+  bool enable_download = 6;
+  repeated string enable_objectives = 7;
+  repeated ServerConnection server_connections = 8;
+}
+
+message SetupStudyResponse {
+  bool success = 1;
+}
+
+message ServerConnection {
+  string server_address = 1;
+  int32 server_port = 2;
+}
