@@ -1,10 +1,12 @@
-from typing import Optional
 import pandas as pd
 import numpy as np
 import asyncio
 import random
 import ast
 import logging
+
+from pandas import DataFrame
+from typing import Optional, Any, Dict, List
 
 from interopt.runner.grpc_runner import run_config
 from interopt.runner.model import load_models
@@ -154,10 +156,6 @@ class GRPCForwarder:
         values = [result[e][0] for e in self.enabled_objectives]
         multi_index = pd.MultiIndex.from_tuples(index_tuples, names=list(d.keys()))
         return pd.DataFrame([values], columns=self.enabled_objectives, index=multi_index)
-
-
-from pandas import DataFrame
-from typing import Any, Dict, List
 
 class Study():
     """

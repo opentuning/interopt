@@ -4,6 +4,12 @@ from interopt.parameter import (
     Param, Constraint
 )
 
+"""
+Search space definitions for optimization problems.
+
+This module provides classes for defining parameter spaces, metrics, and objectives
+for optimization problems.
+"""
 @dataclass
 class Metric:
     """Represents a metric to be measured"""
